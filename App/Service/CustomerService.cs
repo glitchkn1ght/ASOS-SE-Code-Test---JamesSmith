@@ -27,10 +27,10 @@
 
         public CustomerService(ICustomerValidator customerValidator, ICompanyRepository companyRepository, ICustomerCreditOrchestrator customerCreditOrchestrator, ICustomerRepositoryWrapper customerDataAccessWrapper)
         {
-            this.CustomerValidator = customerValidator;
-            this.CompanyRepository = companyRepository;
-            this.CustomerCreditOrchestrator = customerCreditOrchestrator;
-            this.CustomerDataAccessWrapper = customerDataAccessWrapper;
+            this.CustomerValidator = customerValidator ?? throw new ArgumentNullException(nameof(customerValidator));
+            this.CompanyRepository = companyRepository ?? throw new ArgumentNullException(nameof(companyRepository));
+            this.CustomerCreditOrchestrator = customerCreditOrchestrator ?? throw new ArgumentNullException(nameof(customerCreditOrchestrator));
+            this.CustomerDataAccessWrapper = customerDataAccessWrapper ?? throw new ArgumentNullException(nameof(customerDataAccessWrapper));
         }
 
         public bool AddCustomer(string firstName, string lastName, string emailAddress, DateTime dateOfBirth, int companyId)
@@ -48,14 +48,12 @@
                 return false;
             }
 
-            var company = this.CompanyRepository.GetCompanyById(companyId);
+            proposedCustomer.Company = this.CompanyRepository.GetCompanyById(companyId);
 
-            if (company == null)
+            if (proposedCustomer.Company == null)
             {
                 return false;
             }
-
-            proposedCustomer.Company = company;
 
             proposedCustomer = this.CustomerCreditOrchestrator.SetCustomerCreditDetails(proposedCustomer).Result;
 

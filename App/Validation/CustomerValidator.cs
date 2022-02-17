@@ -6,22 +6,22 @@
 
     public class CustomerValidator : ICustomerValidator
     {
-        public bool ValidateCustomerDetails(Customer propoosedCustomer)
+        public bool ValidateCustomerDetails(Customer proposedCustomer)
         {
-            if (string.IsNullOrWhiteSpace(propoosedCustomer.Firstname) || string.IsNullOrWhiteSpace(propoosedCustomer.Lastname))
+            if (string.IsNullOrWhiteSpace(proposedCustomer.Firstname) || string.IsNullOrWhiteSpace(proposedCustomer.Lastname))
             {
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(propoosedCustomer.EmailAddress) || !(propoosedCustomer.EmailAddress.Contains("@")) || !(propoosedCustomer.EmailAddress.Contains(".")))
+            if (string.IsNullOrWhiteSpace(proposedCustomer.EmailAddress) || !(proposedCustomer.EmailAddress.Contains("@")) || !(proposedCustomer.EmailAddress.Contains(".")))
             {
                 return false;
             }
 
             var now = DateTime.Now;
-            int age = now.Year - propoosedCustomer.DateOfBirth.Year;
+            int age = now.Year - proposedCustomer.DateOfBirth.Year;
             
-            if (now.Month < propoosedCustomer.DateOfBirth.Month || (now.Month == propoosedCustomer.DateOfBirth.Month && now.Day < propoosedCustomer.DateOfBirth.Day)) age--;
+            if (now.Month < proposedCustomer.DateOfBirth.Month || (now.Month == proposedCustomer.DateOfBirth.Month && now.Day < proposedCustomer.DateOfBirth.Day)) age--;
 
             if (age < 21)
             {
